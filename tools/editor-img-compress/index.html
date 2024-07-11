@@ -1,0 +1,251 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>图片压缩(Image Compress)-www.zerofc.cn</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<style>
+    *{
+        border: 0;
+        margin: 0;
+        padding: 0;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        box-shadow: 0px 0px 13px 4px rgba(0,0,0,0.1);
+    }
+    #file{
+        display: none;
+    }
+    .imgs{
+        width: 100vw;
+        height: 100vh;
+        background-color: #333;
+        text-align: center;
+        padding-top: 200px;
+    }
+    ::-webkit-scrollbar{
+        width: 1px;
+        background-color: #333;
+    }
+    .up{
+        width: 300px;
+        height: 200px;
+        background-color: #222;
+        margin: 0 auto;
+        border-radius: 10px;
+       
+    }
+    #upc{
+        width: 150px;
+        margin-top: 20px;
+    }
+    .imgwh,#Compress,#imgtype{
+        width: 60px;
+        height: 30px;
+        text-align: center;
+        margin-top: 20px;
+        border-radius: 5px;
+        background-color: #333;
+        outline: none;
+        color: #f8f8f8;
+        margin-left: 5px;
+        margin-right: 5px;
+        border: 0;
+    }
+</style>
+</head>
+<body>
+    <div class="imgs">
+        <input type="file" id="file" multiple="multiple" />
+        <div class="up">
+            <img id="upc" src="data:image/png;base64,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" />
+        </div>
+        <input id="imgk" class="imgwh" type="number" title="宽(width)" value="1024" />
+        <input id="imgg" class="imgwh" type="number" title="高(height)" value="" />
+        <select title="压缩率(Compress)" id="Compress">
+            <option value="0.9">9</option>
+            <option value="0.8">8</option>
+            <option value="0.7" selected>7</option>
+            <option value="0.6">6</option>
+            <option value="0.5">5</option>
+            <option value="0.4">4</option>
+            <option value="0.3">3</option>
+            <option value="0.2">2</option>
+            <option value="0.1">1</option>
+        </select>
+        <select title="导出类型(Type)" id="imgtype">
+            <option value="" selected></option>
+            <option value="jpeg">JPEG</option>
+            <option value="webp">WEBP</option>
+            <!-- <option value="vnd.microsoft.icon">ICO</option> -->
+            <option value="png">PNG</option>
+        </select>
+    </div>
+    
+    <script>
+        const ACCEPT = ['image/jpg', 'image/png', 'image/jpeg','image/webp']
+        const upload = document.getElementById("file");
+        const MAXSIZE = 1024 * 1024 * 100;
+        const MAXTIP = "100MB";
+        var Sel=document.getElementById("Compress");
+        var Sel2=document.getElementById("imgtype");
+        upload.addEventListener('change', function (e) {
+            // 获取上传的文件 解构Arry 拿到第一个元素
+            const file = e.target.files;
+            if (!file.length) {
+                return;
+            }
+           for(var i=0; i<file.length; i++){
+                // 上传校验逻辑
+            if (!ACCEPT.includes(file[i].type)) {
+                console.log(`不支持[${file[i].type}]类型`);
+                upload.value = ""
+                return
+            }
+            if (file[i].size > MAXSIZE) {
+                console.log(`文件超${MAXTIP}`)
+                upload.value = ""
+                return
+            }
+            console.log(file[i].name,file[i].size,file[i].type)
+            // 压缩图片 需要转成base64进行压缩
+            convertImageToBase64(file[i],file[i].name, (base64Image,name) => {
+                compress(base64Image,name, uploadToServer)
+            });
+           }
+           document.getElementById("file").value="";
+        });
+        
+        function convertImageToBase64(file,name, callback) {
+            // 创建一个FileReader对象，它允许Web应用程序异步读取存储在计算机上的文件
+            // 也就是file对象
+            let reader = new FileReader()
+            // 添加一个load事件，load会在加载完毕之后进行触发（也就是readAsDataURL读取完毕后触发）
+            reader.addEventListener("load", function (e) {
+                const base64Image = e.target.result // 相当于reader.result 获取文件的Base64
+                // 回收内存
+                callback && callback(base64Image,name) // 调用callback压缩
+                reader = null
+            })
+
+            // readAsDataURL方法读取指定的file或blob对象
+            reader.readAsDataURL(file)
+        }
+        // 压缩算法函数
+        /* 
+        1.首先拿到了base64的图片字符串 
+        2.创建一个image对象，获得原始图片的宽度和高度
+        3.对原始图片的宽度和高度进行压缩达到符合条件（第一次压缩-从尺寸压缩）
+        4.调用canvasAPI进行绘制新的图片
+        5.绘制成功之后调用canvasAPI进行绘制（canvasAPI支持压缩-二次压缩-从质量压缩）
+        6.得到压缩后的base64
+         */
+        function compress(base64Image,name, callback) {
+            var index=Sel.selectedIndex;
+            var index2=Sel2.selectedIndex;
+            var ysl=Number(Sel.options[index].value) ? Number(Sel.options[index].value) : 0.7;
+            var typeimg=Sel2.options[index2].value ? Sel2.options[index2].value : false;
+            let maxW = document.getElementById("imgk").value ? document.getElementById("imgk").value : false;
+            let maxH = document.getElementById("imgg").value ? document.getElementById("imgg").value : false;
+            const image = new Image(); // 创建image对象 相当于创建a标签
+            image.addEventListener('load', function (e) {
+                // image加载完成后就会触发 也就是src加载后
+                let radio; // 压缩比例
+                let needCompress = false; // 是否需要压缩
+                //宽高比例压缩
+                if (maxW && !maxH && image.naturalWidth > maxW) {
+                    needCompress = true;
+                    // 获得压缩宽高过后的大小（保证等比例缩放）
+                    radio = image.naturalWidth / maxW;
+                    maxH = image.naturalHeight / radio;
+                }
+                if (!maxW && maxH && image.naturalHeight > maxH) {
+                    needCompress = true;
+                    // 获得压缩宽高过后的大小（保证等比例缩放）
+                    radio = image.naturalHeight / maxH;
+                    maxW = image.naturalWidth / radio;
+                }
+                if (maxW && maxH) {
+                    needCompress = true;
+                }
+                // 不需要压缩
+                if (!needCompress) {
+                    maxW = image.naturalWidth;
+                    maxH = image.naturalHeight;
+                }
+                // 第一次压缩完成
+                // 接下来使用canvas进行质量压缩
+                const canvas = document.createElement('canvas');
+                canvas.height = maxH;
+                canvas.width = maxW;
+                canvas.setAttribute("id", "_compress_")
+                // visibility hidden 需要创建的canvas隐藏 而不是不渲染DOM
+                canvas.style.visibility = 'hidden'
+                document.body.appendChild(canvas);
+                const ctx = canvas.getContext('2d');
+                // canvas.clearRect() 方法清空给定矩形内的指定像素。(x1，y1，width,height)
+                ctx.clearRect(0, 0, maxW, maxH);
+                // canvas.drawImage() 方法在画布(canvas)上绘制图像、画布或视频。
+                // 传入 视频/图片对象 起始点x 起始点y 绘制宽 绘制高 
+                ctx.drawImage(image, 0, 0, maxW, maxH);
+                //接来下就是压缩canvas 通过API将canvas输出成base64格式
+                if(!typeimg){
+                    if(name.endsWith('.png')){
+                        var compressImage = canvas.toDataURL('image/png', ysl);
+                    }else if(name.endsWith('.jpeg') || name.endsWith('.jpg')){
+                        var compressImage = canvas.toDataURL('image/jpeg', ysl);
+                    }else if(name.endsWith('.webp')){
+                        var compressImage = canvas.toDataURL('image/webp', ysl);
+                    }else{
+                        var compressImage = canvas.toDataURL('image/jpeg', ysl);
+                    }
+                    
+                }else{
+                    var typeimgs='image/'+typeimg;
+                    var compressImage = canvas.toDataURL(typeimgs, ysl);
+                    name=name.replace(/.[^/.]+$/,'.'+typeimg);
+                }
+                //  const compressImage = canvas.toDataURL('image/png', 0.8);
+                callback && callback(compressImage); // 压缩完成进行后台传输逻辑
+                // 压缩完的图片就已经保存在内存(compressImage)中了 
+                // 接下来移除canvas元素 调用DOM.remove()
+                canvas.remove();
+                console.log(compressImage);
+                imgdown(compressImage,name);
+                // 需要的上传预览的话可以单独建一个new image进行预览
+                // const _image = new Image();
+                // _image.src = compressImage;
+                // document.body.appendChild(_image);
+                //计算压缩比 使用src(base)的长度就可以对比了 
+                // console.log(`压缩比:${image.src.length/compressImage.length}`);
+            })
+            image.src = base64Image;
+            // document.body.appendChild(image) // 显示压缩前的图片
+        }
+        // 绑定上传图片的change事件
+        // mock上传后台逻辑
+        function uploadToServer(compressImage) {
+            // console.log("null");
+        }
+        //下载图片
+        function imgdown(base64Str,name){
+            let aLink = document.createElement("a");
+            aLink.style.display = "none";
+            aLink.href = base64Str;
+            aLink.download = name;
+            // 触发点击-然后移除
+            document.body.appendChild(aLink);
+            aLink.click();
+            document.body.removeChild(aLink);
+        }
+        document.getElementById("upc").addEventListener("click",function(){
+            document.getElementById("file").click();
+        })
+    </script>
+<div onclick="location.href='https://oscimg.oschina.net/oscnet/up-d8dbe919b0ecb354f207e8e6216f1dc23a5.jpg'" style="position: fixed;right: 20px;top: 20px;padding: 10px;">
+    <img style=" width: 25px;vertical-align:middle;" src="data:image/svg+xml,%3Csvg%20width%3D%2228%22%20height%3D%2228%22%20viewBox%3D%220%200%2028%2028%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ccircle%20cx%3D%2214%22%20cy%3D%2214%22%20r%3D%2213.346%22%20fill%3D%22%23F5F5F5%22%20stroke%3D%22%23DDD%22%20stroke-width%3D%221.308%22%2F%3E%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M14%205.6c-4.64%200-8.4%203.855-8.4%208.614%200%203.808%202.408%207.033%205.744%208.176.418.079.573-.186.573-.418%200-.207-.005-.746-.01-1.465-2.336.518-2.832-1.153-2.832-1.153-.381-.994-.933-1.264-.933-1.264-.763-.534.057-.523.057-.523.84.063%201.289.888%201.289.888.748%201.317%201.965.936%202.444.714.078-.555.294-.936.531-1.153-1.861-.211-3.82-.951-3.82-4.251%200-.942.324-1.708.866-2.311-.088-.222-.377-1.095.077-2.28%200%200%20.706-.232%202.31.884A7.962%207.962%200%200%201%2014%209.767a7.99%207.99%200%200%201%202.104.29c1.604-1.115%202.31-.882%202.31-.882.459%201.184.17%202.062.082%202.279.537.603.862%201.37.862%202.31%200%203.311-1.965%204.035-3.837%204.252.3.265.572.794.572%201.597%200%201.153-.01%202.079-.01%202.364%200%20.233.15.497.578.413%203.336-1.143%205.739-4.368%205.739-8.17%200-4.765-3.76-8.62-8.4-8.62Z%22%20fill%3D%22%23191717%22%2F%3E%3C%2Fsvg%3E" />
+    <span style="vertical-align:middle;font-size: 14px;color: #fff;">有用工具盒</span>
+</div>
+</body>
+</html>
