@@ -1,7 +1,7 @@
 <html>  
 <head>  
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />  
-<title>在线文字识别 - www.zerofc.cn</title>
+<title>鍦ㄧ嚎鏂囧瓧璇嗗埆 - www.zerofc.cn</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <style>
 	body {
@@ -32,9 +32,9 @@
 </head>  
 
 <body>
-    <h4>文字识别工具</h4>
+    <h4>鏂囧瓧璇嗗埆宸ュ叿</h4>
     <input type="file" id="imageUpload" accept="image/*">
-    <div id="loading">正在识别文字，请稍等...</div>
+    <div id="loading">姝ｅ湪璇嗗埆鏂囧瓧锛岃绋嶇瓑...</div>
     <div id="imgBox"><img id="imagePreview" src="" alt="Image Preview" /></div>
     <textarea id="output" readonly></textarea>
     <script src="tesseract.min.js"></script>
@@ -58,7 +58,7 @@
                         e.target.result,
                         'chi_sim', 
                         {
-                            logger: m => console.log(m) // 可以输出识别进度
+                            logger: m => console.log(m) // 鍙互杈撳嚭璇嗗埆杩涘害
                         }
                     ).then(({ data: { text } }) => {
                         output.value = text;
