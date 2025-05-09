@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>人体姿态识别工具-www.zerofc.cn</title>
+    <style>
+        #originalImage {
+            border: 1px solid #000000;
+            display: none;
+            margin-top: 20px;
+			width: 900px;
+			height:auto;
+        }
+        #outputCanvas {
+            border: 1px solid #000000;
+            display: none;
+            margin-top: 20px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/posenet"></script>
+</head>
+<body>
+    <input type="file" id="imageInput" accept="image/*">
+    <button id="downloadButton" style="display: none;">下载图像</button>
+    <img id="originalImage" alt="Original Image">
+    <canvas id="outputCanvas"></canvas>
+
+    <script>
+        let net;
+        let imageElement;
+        const originalImageElement = document.getElementById('originalImage');
+        const outputCanvasElement = document.getElementById('outputCanvas');
+        const ctx = outputCanvasElement.getContext('2d');
+
+        async function runPoseDetection() {
+            const image = imageElement;
+            const pose = await net.estimateSinglePose(image);
+            drawPose(pose);
+            document.getElementById('downloadButton').style.display = 'block';
+			document.getElementById('downloadButton').addEventListener('click', downloadImage, false);
+        }
+
+        async function init() {
+            net = await posenet.load();
+            document.getElementById('imageInput').addEventListener('change', handleImage, false);
+        }
+
+        function handleImage(e) {
+            const reader = new FileReader();
+            reader.onload = (function(theFile) {
+                return function(e) {
+                    imageElement = new Image();
+                    imageElement.onload = runPoseDetection;
+                    imageElement.src = e.target.result;
+
+                    // 显示原图
+                    originalImageElement.src = e.target.result;
+                    originalImageElement.style.display = 'block';
+
+                    // 调整Canvas尺寸以适配原图
+                    outputCanvasElement.width = imageElement.width;
+                    outputCanvasElement.height = imageElement.height;
+                    outputCanvasElement.style.display = 'block';
+
+                    // 清除Canvas内容
+                    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                };
+            })(e.target.files[0]);
+            reader.readAsDataURL(e.target.files[0]);
+        }
+
+        function drawPose(pose) {
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+            ctx.fillStyle = 'black';
+            ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = 3;
+            drawSkeleton(pose.keypoints, ctx);
+        }
+
+        function drawSkeleton(keypoints, ctx) {
+            const adjacentKeyPoints = posenet.getAdjacentKeyPoints(keypoints, 0.3);
+            for (let i = 0; i < adjacentKeyPoints.length; i++) {
+                const [keypointA, keypointB] = adjacentKeyPoints[i];
+                if (keypointA.score > 0.1 && keypointB.score > 0.1) {
+                    ctx.beginPath();
+                    ctx.moveTo(keypointA.position.x, keypointA.position.y);
+                    ctx.lineTo(keypointB.position.x, keypointB.position.y);
+                    ctx.stroke();
+                }
+            }
+        }
+
+        function downloadImage() {
+            const link = document.createElement('a');
+            link.href = document.getElementById('outputCanvas').toDataURL('image/png');
+            link.download = 'pose-detection.png';
+            link.click();
+        }
+
+        init();
+    </script>
+</body>
+</html>
